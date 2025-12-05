@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+ <header>
+	 <nav>
+		 <a th:href="@{/}">投稿アプリ</a>
+		 
+		 <ul>
+			 <li>
+				 <a th:href="@{/logout}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+					 ログアウト
+				 </a>
+				 <form id="logout-form" th:action="@{/logout}" method="post"></form>
+			 </li>
+		 </ul>
+	 </nav>
+ </header>
+ 
+ <main>
+	 <div th:if="${param.loggedIn}">
+		 <p>ログインしました。</p>
+	 </div>
+ </main>
+ 
+ <footer>
+	 <p>&copy; 投稿アプリ All right reserved.</p>
+ </footer>
+</body>
+</html>
