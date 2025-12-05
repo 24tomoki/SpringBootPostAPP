@@ -47,4 +47,19 @@ public class PostControllerTest {
 		       .andExpect(status().is3xxRedirection())
 		       .andExpect(redirectedUrl("http://localhost/login"));
 	}
+	
+	@Test
+	@WithUserDetails("taro.samurai@example.com")
+	public void ログイン済みの場合は投稿作成ページが正しく表示される() throws Exception{
+		mockMvc.perform(get("/posts/register"))
+		       .andExpect(status().isOk())
+		       .andExpect(view().name("posts/register"));
+	}
+	
+	@Test
+	public void 未ログインの場合は投稿作成ページからログインページにリダイレクトする() throws Exception{
+		mockMvc.perform(get("/posts/register"))
+		       .andExpect(status().is3xxRedirection())
+		       .andExpect(redirectedUrl("http://localhost/login"));
+	}
 }
