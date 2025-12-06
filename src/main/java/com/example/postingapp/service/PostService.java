@@ -29,6 +29,11 @@ public class PostService {
 		return postRepository.findById(id);
 	}
 	
+	//idが最も大きい投稿を取得する
+	public Post findFirstPostByOrderByIdDesc() {
+		return postRepository.findFirstByOrderByIdDesc();
+	}
+	
 	@Transactional
 	public void createPost(PostRegisterForm postRegisterForm, User user) {
 		Post post = new Post();

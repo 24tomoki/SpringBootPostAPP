@@ -1,5 +1,7 @@
 package com.example.postingapp.controller;
 
+import static org.assertj.core.api.Assertions.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -10,6 +12,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.example.postingapp.entity.Post;
+import com.example.postingapp.service.PostService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -17,6 +23,9 @@ import org.springframework.test.web.servlet.MockMvc;
 public class PostControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
+	
+	@Autowired
+	private PostService postService;
 	
 	@Test
 	@WithUserDetails("taro.samurai@example.com")
@@ -61,5 +70,30 @@ public class PostControllerTest {
 		mockMvc.perform(get("/posts/register"))
 		       .andExpect(status().is3xxRedirection())
 		       .andExpect(redirectedUrl("http://localhost/login"));
+	}
+	
+	@Test
+	@WithUserDetails("taro.samurai@example.com")
+	@Transactional
+	public void ログイン済みの場合は投稿作成後に一覧ページにリダイレクトする() throws Exception{
+		mockMvc.perform(post("/posts/create").with(csrf()).param("title", "テストタイトル").param("content","テスト内容"))
+		       .andExpect(status().is3xxRedirection())
+		       .andExpect(redirectedUrl("/posts"));
+		
+		Post post = postService.findFirstPostByOrderByIdDesc();
+		assertThat(post.getTitle()).isEqualTo("テストタイトル");
+		assertThat(post.getContent()).isEqualTo("テスト内容");
+	}
+	
+	@Test
+	@Transactional
+	public void 未ログインの場合は投稿をせずにログインページにリダイレクトする() throws Exception {
+		mockMvc.perform(post("/posts/create").with(csrf()).param("title","テストタイトル").param("content","テスト内容"))
+		       .andExpect(status().is3xxRedirection())
+		       .andExpect(redirectedUrl("http://localhost/login"));
+		
+		Post post = postService.findFirstPostByOrderByIdDesc();
+		assertThat(post.getTitle()).isNotEqualTo("テストタイトル");
+		assertThat(post.getContent()).isNotEqualTo("テスト内容");
 	}
 }
