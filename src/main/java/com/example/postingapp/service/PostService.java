@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.postingapp.entity.Post;
 import com.example.postingapp.entity.User;
+import com.example.postingapp.form.PostRegisterForm;
 import com.example.postingapp.repository.PostRepository;
 
 @Service
@@ -25,5 +27,15 @@ public class PostService {
 	// 指定したidを持つ投稿を取得する
 	public Optional<Post> findPostById(Integer id){
 		return postRepository.findById(id);
+	}
+	
+	@Transactional
+	public void createPost(PostRegisterForm postRegisterForm, User user) {
+		Post post = new Post();
+		post.setTitle(postRegisterForm.getTitle());
+		post.setContent(postRegisterForm.getContent());
+		post.setUser(user);
+		
+		postRepository.save(post);
 	}
 }

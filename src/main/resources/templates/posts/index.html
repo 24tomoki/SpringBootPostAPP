@@ -30,6 +30,10 @@
                 <p th:text="${errorMessage}"></p>
             </div>
             
+            <div th:if="${successMessage}">
+				<p th:text="${successMessage}"></p>
+			</div>
+            
             <a th:href="@{/posts/register}">投稿</a>
 			
 			<div th:unless="${#lists.isEmpty(posts)}">
