@@ -14,5 +14,5 @@
 | **言語** | **Java Development Kit (JDK)** | 21 | 最新の長期サポート (LTS) バージョンです。 |
 | **フレームワーク** | **Spring Boot** | 3.x系 (例: 3.2.x) | Spring Framework 6に基づいています。 |
 | **開発環境 (IDE)** | **Eclipse** | 2023-12 以降 | Java 21のサポートとSpring Boot 3への互換性を確保するため、最新版を推奨します。 |
-| **データベース** | **MySQL / MariaDB** | - | ローカル環境にMySQLまたはMariaDBのサーバーが必要です。XAMPPのPHPMyAdminからDB設定をしています。|
+| **データベース** | **MySQL / MariaDB** | - | ローカル環境にMySQLまたはMariaDBのサーバーが必要です。<br>XAMPPのPHPMyAdminからDB設定をしています。|
 | **ブラウザ** | **Google Chrome** | - | 動作確認用推奨ブラウザです。 |
