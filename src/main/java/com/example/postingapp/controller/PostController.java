@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.postingapp.entity.Post;
 import com.example.postingapp.entity.User;
+import com.example.postingapp.form.PostEditForm;
 import com.example.postingapp.form.PostRegisterForm;
 import com.example.postingapp.security.UserDetailsImpl;
 import com.example.postingapp.service.PostService;
@@ -73,5 +74,26 @@ public class PostController {
 		postService.createPost(postRegisterForm, user);
 		redirectAttributes.addFlashAttribute("successMessage","投稿が完了しました。");
 		return "redirect:/posts";
+	}
+	
+	@GetMapping("/{id}/edit")
+	public String edit(@PathVariable(name = "id") Integer id,
+			            @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+			            RedirectAttributes redirectAttributes,
+			            Model model) {
+		Optional<Post> optionalPost = postService.findPostById(id);
+		User user = userDetailsImpl.getUser();
+		
+		if(optionalPost.isEmpty() || !optionalPost.get().getUser().equals(user)) {
+			redirectAttributes.addFlashAttribute("errorMessage", "不正なアクセスです。");
+			
+			return "redirect:/posts";
+		}
+		
+		Post post = optionalPost.get();
+		model.addAttribute("post", post);
+		model.addAttribute("postEditForm", new PostEditForm(post.getTitle(),post.getContent()));
+		
+		return "posts/edit";
 	}
 }

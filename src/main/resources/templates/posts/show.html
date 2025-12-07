@@ -25,6 +25,10 @@
 			<article>
 				<h2 th:text="${post.title}"></h2>
 				<p th:text="${post.content}"></p>
+				
+				<div th:if="${#authentication.principal.user.id == post.user.id}">
+					<a th:href="@{/posts/__${post.id}__/edit}">編集</a>
+				</div>
 			</article>
 		</main>
 		<footer>
