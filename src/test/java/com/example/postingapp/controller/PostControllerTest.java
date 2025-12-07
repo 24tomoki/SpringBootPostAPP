@@ -96,4 +96,27 @@ public class PostControllerTest {
 		assertThat(post.getTitle()).isNotEqualTo("テストタイトル");
 		assertThat(post.getContent()).isNotEqualTo("テスト内容");
 	}
+	
+	@Test
+	@WithUserDetails("taro.samurai@example.com")
+	public void ログイン済みの場合は自身の投稿編集ページが正しく表示される() throws Exception{
+		mockMvc.perform(get("/posts/1/edit"))
+		       .andExpect(status().isOk())
+		       .andExpect(view().name("posts/edit"));
+	}
+	
+	@Test
+	@WithUserDetails("jiro.samurai@example.com")
+	public void ログイン済みの場合は他人の投稿編集ページから投稿一覧ページにリダイレクトする() throws Exception{
+		mockMvc.perform(get("/posts/1/edit"))
+		       .andExpect(status().is3xxRedirection())
+		       .andExpect(redirectedUrl("/posts"));
+	}
+	
+	@Test
+	public void 未ログインの場合は投稿編集ページからログインページにリダイレクトする() throws Exception{
+		mockMvc.perform(get("/posts/1/edit"))
+		       .andExpect(status().is3xxRedirection())
+		       .andExpect(redirectedUrl("http://localhost/login"));
+	}
 }
