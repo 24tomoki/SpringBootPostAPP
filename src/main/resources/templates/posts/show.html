@@ -28,6 +28,9 @@
 				<div th:if="${#authentication.principal.user.id == post.user.id}">
 					<a th:href="@{/posts/__${post.id}__/edit}">編集</a>
 				</div>
+				<form th:action="@{/posts/__${post.id}__/delete}" method="post" onsubmit="return confirm('本当に削除しますか？');">
+					<button type="submit">削除</button>
+				</form>
 			</article>
 		</main>
 		<footer>

@@ -52,4 +52,8 @@ public class PostService {
 		postRepository.save(post);
 	}
 	
+	@Transactional
+	public void deletePost(Post post) {
+		postRepository.delete(post);
+	}
 }
