@@ -163,4 +163,39 @@ public class PostControllerTest {
 		assertThat(post.getTitle()).isNotEqualTo("テストタイトル");
 		assertThat(post.getContent()).isNotEqualTo("テスト内容");
 	}
+	
+	@Test
+    @WithUserDetails("taro.samurai@example.com")
+    @Transactional
+    public void ログイン済みの場合は自身の投稿削除後に投稿一覧ページにリダイレクトする() throws Exception {
+        mockMvc.perform(post("/posts/1/delete").with(csrf()))
+               .andExpect(status().is3xxRedirection())
+               .andExpect(redirectedUrl("/posts"));
+
+        Optional<Post> optionalPost = postService.findPostById(1);
+        assertThat(optionalPost).isEmpty();
+    }
+
+    @Test
+    @WithUserDetails("jiro.samurai@example.com")
+    @Transactional
+    public void ログイン済みの場合は他人の投稿を削除せずに投稿一覧ページにリダイレクトする() throws Exception {
+        mockMvc.perform(post("/posts/1/delete").with(csrf()))
+               .andExpect(status().is3xxRedirection())
+               .andExpect(redirectedUrl("/posts"));
+
+        Optional<Post> optionalPost = postService.findPostById(1);
+        assertThat(optionalPost).isPresent();
+    }
+
+    @Test
+    @Transactional
+    public void 未ログインの場合は投稿を削除せずにログインページにリダイレクトする() throws Exception {
+        mockMvc.perform(post("/posts/1/delete").with(csrf()))
+               .andExpect(status().is3xxRedirection())
+               .andExpect(redirectedUrl("http://localhost/login"));
+
+        Optional<Post> optionalPost = postService.findPostById(1);
+        assertThat(optionalPost).isPresent();
+    }   
 }

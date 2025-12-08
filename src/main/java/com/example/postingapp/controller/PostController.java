@@ -135,7 +135,7 @@ public class PostController {
 		
 		if(optionalPost.isEmpty() || !optionalPost.get().getUser().equals(user)) {
 			redirectAttributes.addFlashAttribute("errorMessage","不正なアクセスです。");
-			return "redirect:/posts9";
+			return "redirect:/posts";
 		}
 		
 		Post post = optionalPost.get();
