@@ -113,6 +113,7 @@ public class PostController {
 		}
 		
 		Post post = optionalPost.get();
+		
 		if(bindingResult.hasErrors()) {
 			model.addAttribute("post",post);
 			model.addAttribute("postEditForm",postEditForm);
