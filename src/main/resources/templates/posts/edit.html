@@ -1,52 +1,53 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>投稿編集</title>
-	</head>
-	<body>
-		<header>
-			<nav>
-				<a th:href="@{/}">投稿アプリ</a>
-				<ul>
-					<li>
-						<a th:href="@{/logout}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">ログアウト</a>
-						<form id="logout-form" th:action="@{/logout}" method="post"></form>
-					</li>
-				</ul>
-			</nav>
-		</header>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<div th:replace="~{fragment :: meta}"></div>
+	<div th:replace="~{fragment :: styles}"></div>
+	<title>投稿編集</title>
+</head>
+
+<body>
+	<div class="wrapper">
+		<div th:replace="~{fragment :: header}"></div>
 		
 		<main>
-			<h1>投稿編集</h1>
-			
-			<div th:if="${successMessage}">
-				<p th:text="${successMessage}"></p>
+			<div class="container">
+				<h1 class="fs-2 my-3">投稿編集</h1>
+				
+				<div class="mb-2">
+					<a th:href="@{/posts}" class="text-decoration-none">&lt; 戻る</a>
+				</div>
+				
+				<form th:action="@{/posts/__${post.id}__/update}" method="post" th:object="${postEditForm}">
+					<div class="form-group mb-3">
+						<label for="title">タイトル</label>
+						<div th:if="${#fields.hasErrors('title')}" class="text-danger small mb-2" th:errors="*{title}">
+						</div>
+						<input type="text" class="form-control" th:field="*{title}">
+					</div>
+					
+					<div>
+						<div class="form-group mb-3">
+							<label for="content">本文</label>
+							<div th:if="${#fields.hasErrors('content')}" class="text-danger small mb-2"
+								th:errors="*{content}"></div>
+							<textarea class="form-control" th:field="*{content}"></textarea>
+						</div>
+						
+						<div>
+							<button type="submit" class="btn btn-outline-primary">更新</button>
+						</div>
+				</form>
 			</div>
-			<a th:href="@{/posts}">&lt; 戻る</a>
-			
-			<form th:action="@{/posts/__${post.id}__/update}" method="post" th:object="${postEditForm}">
-				<div>
-					<label for="title">タイトル</label>
-					<div th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
-					<input type="text" th:field="*{title}">
-				</div>
-				
-				<div>
-					<label for="content">本文</label>
-					<div th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>
-					<textarea th:field="*{content}"></textarea>
-				</div>
-				
-				<div>
-					<button type="submit">更新</button>
-				</div>
-			</form>
 		</main>
 		
-		<footer>
-			<p>&copy; 投稿アプリ All rights reserved.</p>
-		</footer>
-	</body>
+		<div th:replace="~{fragment :: footer}"></div>
+	</div>
+	
+	<div th:replace="~{fragment :: scripts}"></div>
+</body>
+
+</html>
+
 </html>
