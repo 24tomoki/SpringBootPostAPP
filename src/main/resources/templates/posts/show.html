@@ -25,6 +25,7 @@
 						<div class="card-body">
 							<h2 class="card-title fs-5" th:text="${post.title}"></h2>
 							<p class="card-text" th:text="${post.content}"></p>
+							<p class="card-text" th:text="${post.updatedAt}"></p>
 							<div th:if="${#authentication.principal.user.id == post.user.id}" class="d-flex">
 								<a th:href="@{/posts/__${post.id}__/edit}"
 									class="btn btn-outline-primary d-block me-1">編集</a>

@@ -34,7 +34,7 @@ public class PostController {
 	@GetMapping
 	public String index(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, Model model) {
 		User user = userDetailsImpl.getUser();
-		List<Post> posts = postService.findPostsByUserOrderByCreatedAtDesc(user);
+		List<Post> posts = postService.findPostsByUserOrderByCreatedAtAsc(user);
 		
 		model.addAttribute("posts",posts);
 		
