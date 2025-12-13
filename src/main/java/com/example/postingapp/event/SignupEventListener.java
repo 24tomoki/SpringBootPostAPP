@@ -26,7 +26,7 @@ public class SignupEventListener {
 		String token = UUID.randomUUID().toString();
 		verificationTokenService.create(user, token);
 		
-		String senderAddress = "springboot.postingapp@example.com";
+		String senderAddress = "samurai@sandbox5f14d4f807704dd6b61773e787fd9728.mailgun.org";
 		String recipientAddress = user.getEmail();
 		String subject = "メール認証";
 		String confirmationUrl = signupEvent.getRequestUrl() + "/verify?token=" + token;
